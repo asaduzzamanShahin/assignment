@@ -1,0 +1,138 @@
+import 'package:assinment1/assinment1.dart' as assinment1;
+// A. Define an interface named Role
+abstract class Role {
+  void displayRole();
+}
+
+// B. Create a class Person
+class Person implements Role {
+  String name;
+  int age;
+  String address;
+  Role role;
+
+  Person(this.name, this.age, this.address, this.role);
+
+  // Getter methods
+  String getName() => name;
+  int getAge() => age;
+  String getAddress() => address;
+  Role getRole() => role;
+
+  // Implement the Role interface methods
+  @override
+  void displayRole() {
+    print("Role: ${role.runtimeType}");
+  }
+}
+
+// C. Create a class Student that extends Person
+class Student extends Person {
+  int studentID;
+  int grade;
+  List<double> courseScores = [];
+
+  // Constructor
+  Student(String name, int age, String address, Role role, this.studentID, this.grade)
+      : super(name, age, address, role);
+
+  // Override the displayRole() method
+  @override
+  void displayRole() {
+    print("Role: Student");
+  }
+
+  // Method to calculate the average score of courses
+  double calculateAverageScore() {
+    if (courseScores.isEmpty) return 0.0;
+    return courseScores.reduce((a, b) => a + b) / courseScores.length;
+  }
+}
+
+// D. Create another class Teacher that extends Person
+class Teacher extends Person {
+  int teacherID;
+  List<String> coursesTaught = [];
+
+  // Constructor
+  Teacher(String name, int age, String address, Role role, this.teacherID)
+      : super(name, age, address, role);
+
+  // Override the displayRole() method
+  @override
+  void displayRole() {
+    print("Role: Teacher");
+  }
+
+  // Method to display the courses taught by the teacher
+  void displayCoursesTaught() {
+    if (coursesTaught.isEmpty) {
+      print("No courses taught.");
+    } else {
+      print("Courses Taught:");
+      for (var course in coursesTaught) {
+        print("- $course");
+      }
+    }
+  }
+}
+
+// E. Create a class StudentManagementSystem
+class StudentManagementSystem {
+  static void main() {
+    // Create instances of Student and Teacher classes
+    var student = Student("Shahin", 28, "see land-uk", StudentRole(), 12345, 10);
+    student.courseScores = [90, 85, 82];
+
+    var teacher = Teacher("Devid liu", 35, "England", TeacherRole(), 5678);
+    teacher.coursesTaught = ["Math", "English", "ICT"];
+
+    // Set the attributes using appropriate methods
+    // (Note: In real-world scenarios, you might want to use setters instead)
+    student.name = "Shahin";
+    student.age = 28;
+    student.address = "see land-uk";
+
+    teacher.name = "David san";
+    teacher.age = 40;
+    teacher.address = "England";
+
+
+    student.displayRole();
+    student.displayPersonInformation();
+
+    print("\n");
+
+    teacher.displayRole();
+    teacher.displayPersonInformation();
+    teacher.displayCoursesTaught();
+  }
+}
+
+// Implement the StudentRole and TeacherRole classes
+class StudentRole implements Role {
+  @override
+  void displayRole() {
+    print("Role: Student");
+  }
+}
+
+class TeacherRole implements Role {
+  @override
+  void displayRole() {
+    print("Role: Teacher");
+  }
+}
+
+// Helper extension method to display person information
+extension DisplayPersonInformation on Person {
+  void displayPersonInformation() {
+    print("Name: ${getName()}");
+    print("Age: ${getAge()}");
+    print("Address: ${getAddress()}");
+  }
+}
+
+void main() {
+  StudentManagementSystem.main();
+}
